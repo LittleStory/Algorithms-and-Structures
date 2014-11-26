@@ -81,8 +81,6 @@ int main(){
             int elOp = stackStand.stackPop();
             if (elemX != elOp)
                 stackOpt.stackPush(elOp);
-            else
-                n = n - 1;
         }
 
         stackOpt.stackPush(elemX);
