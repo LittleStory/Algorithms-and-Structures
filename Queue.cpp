@@ -22,7 +22,7 @@ template <typename T>
         size(sizeOf)
         {
             queue = new T [size];
-            head  = 0;
+            head  = 1;
             tail = size - 1;
         }
 
@@ -55,7 +55,6 @@ int main(){
     std::cin >> n;
 
     Queue <int> standQue(n);
-    Queue <int> optioQue(n);
 
     for(int i = 0; i < n; i++){
         int element;
@@ -63,26 +62,15 @@ int main(){
         standQue.Enqueue(element);
     }
 
-    for (int i = 0; i <= n; i++)
-        std::cout << standQue.Dequeue() << " ";
+        for (int j = 0; j < n; j++){
+            int elm = standQue.Dequeue();
+            if(elm%2 == 0)
+                std::cout << elm << " ";
+        }
 
-   int j = 0, elS = 0;
-
-   for(int i = 1; i <= n; i++){
-       elS = standQue.Dequeue();
-       if(elS%2 == 0){
-           standQue.Enqueue(elS);
-       }
-       else{
-
-           optioQue.Enqueue(elS);
-           j = j + 1;
-       }
-   }
-
-   for (int i = ; i <= j; i++)
-       standQue.Enqueue(optioQue.Dequeue());
-
-   std::cout << std::endl;
-
+        for (int j = 0; j < n; j++){
+            int elm = standQue.Dequeue();
+            if(elm%2 != 0)
+                std::cout << elm << " ";
+        }
 }
