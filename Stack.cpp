@@ -1,127 +1,94 @@
 #include "iostream"
 #include "cmath"
-#include "assert.h"
 
 template <typename T>
         class Stack{
-        private:
-            T *StackInit;
-            const int size;
-            int stackTop;
-        public:
-            Stack(int = 10);
-            Stack(const Stack<T> &);
-            ~Stack();
+            private:
+                T *stackInit;
+                int stackSize;
+                int stackTop;
 
-            inline void stackPush(const T &);
-            inline void stackPrint();
-            inline T    stackDel();
-            inline int  stackSize() const ;
-            inline int  stackGetTop() const ;
-            inline T    *stackLink() const;
-            inline const T &Peek(int) const;
+             public:
+                Stack(int = 5);
+                ~Stack();
+
+                inline bool stackEmpty();
+                inline void stackPush(const T &);
+                inline T    stackPop();
         };
+template <typename T>
+Stack<T>::Stack(int sizeOfStack):
+        stackSize(sizeOfStack)
+        {
+            stackInit = new T [stackSize];
+            stackTop  = 0;
+        }
 
 template <typename T>
-    Stack<T>::Stack(int sizeOfStack):
-    size(sizeOfStack)
-    {
-        StackInit = new T [size];
-        stackTop  = 0;
-    }
+Stack<T>::~Stack()
+        {
+            delete [] stackInit;
+        }
 
 template <typename T>
-    Stack<T>::~Stack()
-    {
-        delete [] StackInit;
-    }
+inline bool Stack<T>::stackEmpty()
+        {
+            if(stackTop == 0)
+                return true;
+            else
+                return false;
+        }
 
 template <typename T>
-    Stack<T>::Stack(const Stack<T> & otherStack) :
-        size(otherStack.stackSize())
-    {
-    StackInit = new T[size];
-    stackTop = otherStack.stackGetTop();
-
-    for(int i = stackTop - 1; i >= 0; i--)
-        StackInit[i] = otherStack.stackLink()[i];
-    }
-
-
-//Optional functions for operations on stack
+inline void Stack<T>::stackPush(const T &value)
+        {
+            stackTop = stackTop + 1;
+            stackInit[stackTop] = value;
+        }
 
 template <typename T>
-    inline void Stack<T>::stackPush(T const &value)
-    {
-        if(stackTop < size);
-            StackInit[stackTop++] = value;
-    }
-
-template <typename T>
-    inline void Stack<T>::stackPrint()
-    {
-        for(int i = stackTop - 1; i >= 0; i--)
-            std::cout << StackInit[i] << std::endl;
-    }
-
-template <typename T>
-   inline T Stack<T>::stackDel()
-    {
-        assert(stackTop > 0);
-            StackInit[stackTop--];
-    }
-
-template <class T>
-    inline const T &Stack<T>::Peek(int n) const
-    {
-        assert(n <= stackTop);
-            return StackInit[stackTop - n];
-    }
-
-
-template <typename T>
-    inline int Stack<T>::stackSize() const
-    {
-        return size;
-    }
-
-
-template <typename T>
-    inline T *Stack<T>::stackLink() const
-    {
-        return StackInit;
-    }
-
-
-template <typename T>
-    inline int Stack<T>::stackGetTop() const
-    {
-        return stackTop;
-    }
-
-
-int main() {
-    int n;
-    std::cin >> n;
-
-    Stack<int> stackS(n);
-
-    for (int i = 0, elementStack; i < n; ++i) {
-        std::cin >> elementStack;
-        stackS.stackPush(elementStack);
-    }
-
-    stackS.stackPrint();
-    std::cout << std::endl;
-
-    for (int i = stackS.stackGetTop() - 1; i <= 0; i--) {
-        for (int j = stackS.stackGetTop() - 1; j <= 0; j--){
-            if (stackS.Peek(i) == stackS.Peek(j)) {
-                stackS.stackDel();
+inline T Stack<T>::stackPop()
+        {
+            if(!stackEmpty()){
+                stackTop = stackTop - 1;
+                return  stackInit[stackTop + 1];
             }
         }
+
+
+
+
+int main(){
+    int n = 0;
+    std::cout << "Введите размер стека:" << " ";
+    std::cin >> n;
+
+    Stack <int> stackStand(n);
+    Stack <int> stackOpt(n);
+
+    std::cout << std::endl << "n = " << n;
+    std::cout << std::endl << "Ввод элментов стека:";
+    int elm = 0;
+    for (int i = 0; i < n; i++) {
+        std::cout << std::endl << "iteration" << " " << i << std::endl;
+        std::cin >> elm;
+        stackStand.stackPush(elm);
     }
 
-    std::cout << "Стек после удаления повторяющихся элементов:" << std::endl;
-    stackS.stackPrint();
+    for(int i = 0; i < n; i++){
+        int elemX = stackStand.stackPop();
+        while(!stackStand.stackEmpty()) {
+            int elOp = stackStand.stackPop();
+            if (elemX != elOp)
+                stackOpt.stackPush(elOp);
+        }
+
+        stackOpt.stackPush(elemX);
+
+        while(!stackOpt.stackEmpty())
+            stackStand.stackPush(stackOpt.stackPop());
+    }
+
+    while(!stackStand.stackEmpty())
+        std::cout << stackStand.stackPop() << " ";
 }
