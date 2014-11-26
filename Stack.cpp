@@ -70,7 +70,6 @@ int main(){
     std::cout << std::endl << "Ввод элментов стека:";
     int elm = 0;
     for (int i = 0; i < n; i++) {
-        std::cout << std::endl << "iteration" << " " << i << std::endl;
         std::cin >> elm;
         stackStand.stackPush(elm);
     }
@@ -81,6 +80,8 @@ int main(){
             int elOp = stackStand.stackPop();
             if (elemX != elOp)
                 stackOpt.stackPush(elOp);
+            else
+                n = n - 1;
         }
 
         stackOpt.stackPush(elemX);
